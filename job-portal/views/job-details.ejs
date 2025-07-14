@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+/* Job Details Page */
+    body {
+  background-color: #f1f5f9;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.job-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+.job-detail-card {
+  background-color: #ffffff;
+  max-width: 600px;
+  width: 100%;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.job-detail-card h2 {
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.job-detail-card p {
+  margin: 10px 0;
+  line-height: 1.5;
+  color: #333;
+}
+
+.job-detail-card strong {
+  color: #000;
+}
+
+.apply-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.apply-btn:hover {
+  background-color: #218838;
+}
+
+.close-btn {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .job-detail-card {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .job-detail-card h2 {
+    font-size: 22px;
+  }
+
+  .apply-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .close-btn {
+    right: 10px;
+    top: 10px;
+  }
+}
+</style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="job-details-page">
+  <span class="close-btn" onclick="window.location.href='/all-jobs'">×</span>
+
+  <h2><%= job.title %></h2>
+  <p><strong>Company:</strong> <%= job.company %></p>
+  <p><strong>Location:</strong> <%= job.location %> (<%= job.mode %>)</p>
+  <p><strong>Salary:</strong> ₹<%= job.salary %></p>
+  <p><strong>Skills:</strong> <%= job.skills %></p>
+  <p><strong>Experience:</strong> <%= job.experience %></p>
+  <p><strong>Criteria:</strong> <%= job.criteria %></p>
+  <p><strong>Description:</strong></p>
+  <p><%= job.description %></p>
+  <button class="apply-btn">Apply Now</button>
+  <a href="/all-jobs" class="close-btn">&times;</a> <!--close btn to cut the page-->
+</div>
+    
+</body>
+<script>
+  if(new
+    URLSearchParams(window.location.search).get("applied")==="1") {
+      alert("Application submitted successfully!");
+    }
+</script>
+</html>

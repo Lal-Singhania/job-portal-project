@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+ body{
+      margin: 0;
+      padding: 0;
+      background-color: #f1f5f9;
+      font-family: 'segoe UI' ,sans-serif;
+      }
+ /* Container styling */
+.job-container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.job-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Job list grid */
+.job-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+/* Job card box */
+.job-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  padding: 20px;
+  width: 300px;
+  transition: transform 0.2s;
+}
+
+.job-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Job content */
+.job-card h3 {
+  color: #007bff;
+  margin-bottom: 5px;
+}
+
+.job-card h4 {
+  color: #555;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+
+.job-card .location {
+  font-style: italic;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.job-card p {
+  margin: 5px 0;
+}
+
+/* Buttons */
+.job-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.view-btn, .apply-btn {
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.view-btn {
+  background-color: transparent;
+  border: 1px solid #007bff;
+  color: #007bff;
+}
+
+.view-btn:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.apply-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.apply-btn:hover {
+  background-color: #218838;
+}
+
+
+  /* Mobile-first, adjusts for bigger screens */
+  @media screen and (min-width: 768px) {
+    .job-title {
+      font-size: 1.4em;
+    }
+  }
+</style>
+    <title>Document</title>
+</head>
+<body>
+  <div class="jobs-container">
+    <h2>Available Jobs</h2>
+    <div class="job-grid">
+  <% jobs.forEach(job => { %>
+    <div class="job-card">
+      <h2 class="job-title"><%= job.title %></h2>
+
+      <p class="company-name"><%= job.company || "Unknown Company" %></p>
+      <p class="job-location"><%= job.location %> (<%= job.mode %>)</p>
+      <p class="job-skills"><strong>Skills:</strong> <%= job.skills %></p>
+      <p class="job-salary"><strong>Salary:</strong> ₹<%= job.salary %></p>
+      <a href="/all-jobs/<%= job.id %>" class="view-job-detail">View Detail</a>
+      <a href="/job/<%= job.id  %>/apply"><button class="apply-btn">Apply Now</button> </a> 
+
+    </div>
+  <% }) %>
+  </div>
+</div>
+    
+</body>
+</html>

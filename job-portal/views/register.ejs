@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .container{
+            height: 100vh;
+           display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0093E9;
+        background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 33%, #2a6982 66%, #4aaba2 100%);
+ 
+        }
+        .box{
+            
+            text-align: center;
+            margin-top: 50px;
+            border-radius: 9px;
+            height: 430px;
+            width: 380px;
+            background-color: #D9AFD9;
+            background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+        }
+        .box input{
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid black;
+            align-content: center;
+            border-radius: 5px;
+        }
+        .box button{
+            height: 30px;
+            width: 90px;
+            border: 2px solid black;
+            border-radius: 10px;
+            background-color: #0ba5ff;
+            background-image: linear-gradient(135deg, #0ba5ff 0%, #1b23ff 50%, #00409d 100%);
+
+        }
+
+
+    </style>
+    <title>Register</title>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <h2> Register</h2>
+            <form action="/register" method="POST">
+                <input type="text" name="username" placeholder="Enter your name" required>
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <input type="password" name="password" placeholder="Enter your password" required>
+                <input type="password" name="confirm password" placeholder="confirm password" required>
+            <button type="submit" > Register</button> 
+            </form>
+        </div>
+      
+    </div>
+</body>
+</html>

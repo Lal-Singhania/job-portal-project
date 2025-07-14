@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto';
+  background: linear-gradient(120deg, #89f7fe, #66a6ff);
+  height: 130vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 70%;
+  max-width: 520px;
+  padding: 20px;
+}
+
+.form-box {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+.form-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+form textarea {
+  resize: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+  </style>
+  <title>Post a Job</title>
+</head>
+<body>
+  <div class="container">
+    <div class="form-box">
+      <h2>Post a Job</h2>
+      <form action="/post-job" method="POST">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" name="company" placeholder="Company Name" required>
+        <textarea name="description" placeholder="Job Description" rows="5"></textarea>
+        <input type="text" name="skills" placeholder="Required Skills" required>
+        <input type="text" name="location" placeholder="Location" required>
+        <input type="text" name="criteria" placeholder="Eligibility Criteria" required>
+        <input type="text" name="experience" placeholder="Experience" required>
+        <input type="text" name="salary" placeholder="Salary" required>
+        <label for="mode">job mode:</label>
+        <select name="mode" required>
+          <option value="Work from home">Work from home</option>
+         <option value="Office job">Office job</option>
+        </select>
+        <button type="submit">Post Job</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

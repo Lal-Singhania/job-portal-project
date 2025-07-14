@@ -56,8 +56,8 @@ app.get("/dashboard", isAuthenticated, (req, res) => {
             || req.session.user; // Local
 
   const username = user.displayName || user.username || user.name || "Guest";
-
-  res.render("dashboard", { username });
+  const applied = req.query.applied==="1";
+ return res.render("dashboard", { username, applied });
 });
 
 

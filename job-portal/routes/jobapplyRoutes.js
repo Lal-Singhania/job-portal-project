@@ -3,6 +3,7 @@ import {transporter} from "../config/mailer.js";
 import db from "../config/dbclient.js";
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 
 const router = express.Router();
 
@@ -51,8 +52,11 @@ router.post("/jobs/:jobId/apply", upload.single("resume"), async (req,res)=>{
         text: `Hi, an application has applied for your job. see resume attached.`,
         attachments: [{ filename: req.file.originalname, path: resumepath }],
     });
-
-    res.send("Resume uploded and email sent successfully");
+    fs.unlink(resumepath, (err)=>{
+        if (err) console.error("Failed to delete resume", err);
+        else console.log("Resume deleted after sending");
+    });
+    res.redirect("/dashboard?applied=1");
 });
 
 export default router;

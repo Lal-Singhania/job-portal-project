@@ -33,6 +33,13 @@
                       <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
                     </a>
                   </div>
+        <% if (applied) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+     ✅ Resume submitted successfully!
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
+
                   <h5 class="fw-semibold text-white">Welcome, <%= username%> </h5>
                   <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>

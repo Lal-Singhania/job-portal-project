@@ -83,6 +83,7 @@ router.post("/jobs/:jobId/apply", upload.single("resume"), async (req, res) => {
     });
 
     // Redirect with success message
+    req.session.applied = true;
     res.redirect("/dashboard");
   } catch (err) {
     console.error("Error processing job application:", err);

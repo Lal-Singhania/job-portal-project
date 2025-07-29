@@ -141,3 +141,13 @@ img{
     background-color: #3189b6;
     cursor: pointer;
 }
+
+.custom-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050;
+  min-width: 250px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}

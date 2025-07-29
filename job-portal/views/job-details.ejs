@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
 /* Job Details Page */
-    body {
+body {
   background-color: #f1f5f9;
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -20,12 +20,12 @@
 }
 
 .job-detail-card {
-  background-color: #ffffff;
+  background-color: #fff;
   max-width: 600px;
   width: 100%;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   position: relative;
 }
 
@@ -50,10 +50,12 @@
   padding: 10px 20px;
   background-color: #28a745;
   color: white;
+  border: none;
   border-radius: 6px;
   text-decoration: none;
   font-weight: bold;
   transition: background-color 0.3s;
+  cursor: pointer;
 }
 
 .apply-btn:hover {
@@ -64,27 +66,30 @@
   position: absolute;
   right: 20px;
   top: 15px;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
   color: #888;
+  background: none;
+  border: none;
+}
+
+.close-btn:hover {
+  color: #ff4d4f;
 }
 
 /* Responsive Design */
 @media (max-width: 600px) {
   .job-detail-card {
     padding: 20px;
-    max-width: 90%;
+    max-width: 95%;
   }
-
   .job-detail-card h2 {
     font-size: 22px;
   }
-
   .apply-btn {
     width: 100%;
     text-align: center;
   }
-
   .close-btn {
     right: 10px;
     top: 10px;
@@ -94,22 +99,21 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="job-details-page">
-  <span class="close-btn" onclick="window.location.href='/all-jobs'">×</span>
-
-  <h2><%= job.title %></h2>
-  <p><strong>Company:</strong> <%= job.company %></p>
-  <p><strong>Location:</strong> <%= job.location %> (<%= job.mode %>)</p>
-  <p><strong>Salary:</strong> ₹<%= job.salary %></p>
-  <p><strong>Skills:</strong> <%= job.skills %></p>
-  <p><strong>Experience:</strong> <%= job.experience %></p>
-  <p><strong>Criteria:</strong> <%= job.criteria %></p>
-  <p><strong>Description:</strong></p>
-  <p><%= job.description %></p>
-  <button class="apply-btn">Apply Now</button>
-  <a href="/all-jobs" class="close-btn">&times;</a> <!--close btn to cut the page-->
-</div>
-    
+  <div class="job-details-container">
+    <div class="job-detail-card">
+      <span class="close-btn" onclick="window.location.href='/all-jobs'">&times;</span>
+      <h2><%= job.title %></h2>
+      <p><strong>Company:</strong> <%= job.company %></p>
+      <p><strong>Location:</strong> <%= job.location %> (<%= job.mode %>)</p>
+      <p><strong>Salary:</strong> ₹<%= job.salary %></p>
+      <p><strong>Skills:</strong> <%= job.skills %></p>
+      <p><strong>Experience:</strong> <%= job.experience %></p>
+      <p><strong>Criteria:</strong> <%= job.criteria %></p>
+      <p><strong>Description:</strong></p>
+      <p><%= job.description %></p>
+      <a href="/job/<%= job.id  %>/apply"><button class="apply-btn">Apply Now</button> </a> 
+    </div>
+  </div>
 </body>
 <script>
   if(new

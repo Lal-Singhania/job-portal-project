@@ -56,8 +56,10 @@ app.get("/dashboard", isAuthenticated, (req, res) => {
             || req.session.user; // Local
 
   const username = user.displayName || user.username || user.name || "Guest";
-  const applied = req.query.applied==="1";
- return res.render("dashboard", { username, applied });
+  const applied = req.session.applied; // Check if the user has applied for a job
+  // Remove the flag so it only shows once
+  delete req.session.applied;
+ return res.render("dashboard", { username, applied , user});
 });
 
 
@@ -211,6 +213,10 @@ app.get("/all-jobs/:id", async(req,res)=>{
 
 app.get ("/pricing", (req,res) => {
     res.sendFile( __dirname +"/public/pricing.html");
+});
+
+app.get("/About", (req,res) => {
+    res.sendFile( __dirname +"/public/About.html");
 });
 
 app.get ("/index.html", (req,res) => {

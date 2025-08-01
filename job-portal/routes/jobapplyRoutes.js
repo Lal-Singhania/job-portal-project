@@ -4,6 +4,7 @@ import path from "path";
 import fs from "fs";
 import { transporter } from "../config/mailer.js";
 import db from "../config/dbclient.js";
+import { isAuthenticated } from "../middlewares/auth.js";
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ const upload = multer({ storage: storage });
 
 
 // GET route for job apply page
-router.get("/job/:jobId/apply", async (req, res) => {
+router.get("/job/:jobId/apply", isAuthenticated, async (req, res) => {
   const { jobId } = req.params;
   try {
     const job = await db.query("SELECT * FROM jobs WHERE id = $1", [jobId]);
@@ -37,7 +38,7 @@ router.get("/job/:jobId/apply", async (req, res) => {
 
 
 // POST route to handle resume submission
-router.post("/jobs/:jobId/apply", upload.single("resume"), async (req, res) => {
+router.post("/jobs/:jobId/apply", isAuthenticated, upload.single("resume"), async (req, res) => {
   const { jobId } = req.params;
 
   if (!req.file) {

@@ -8,7 +8,9 @@ import passport from "passport";
 import "./config/passport.js";
 import authRoutes from "./routes/authroutes.js";
 import dotenv from "dotenv";
-import jobapplyRoutes from "./routes/jobapplyRoutes.js"
+import jobapplyRoutes from "./routes/jobapplyRoutes.js";
+import { isAuthenticated } from "./middlewares/auth.js";
+import faqRoutes from "./routes/faqroute.js";
 
 dotenv.config();
 
@@ -35,20 +37,11 @@ app.use(session({
     saveUninitialized: false, // don't create empty session 
     cookie: {maxAge: 30*24*60*60*1000}
 }));
-
+app.use(faqRoutes);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/auth",authRoutes);
 app.use(jobapplyRoutes);
-
-function isAuthenticated(req, res, next) {
-
-  if (req.session.user || req.isAuthenticated()) {
-    return next();
-  }
-  res.redirect("/login");
-}
-
 
 //routes
 app.get("/dashboard", isAuthenticated, (req, res) => {
@@ -155,7 +148,7 @@ app.get("/logout", (req, res) => {
 });
 
 
-app.get("/post-job", (req,res)=>{
+app.get("/post-job", isAuthenticated,(req,res)=>{
     res.render("post-job");
 });
 
@@ -184,7 +177,7 @@ app.post("/post-job", async (req,res)=>{
     }
 });
 
-app.get("/all-jobs", async (req,res)=>{
+app.get("/all-jobs",isAuthenticated, async (req,res)=>{
     
     try{
         const result=await db.query("SELECT * FROM jobs");
@@ -213,6 +206,10 @@ app.get("/all-jobs/:id", async(req,res)=>{
 
 app.get ("/pricing", (req,res) => {
     res.sendFile( __dirname +"/public/pricing.html");
+});
+
+app.get("/faq",isAuthenticated, (req, res) => {
+  res.render("faq", { messageSent: false });
 });
 
 app.get("/About", (req,res) => {

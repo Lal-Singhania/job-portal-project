@@ -11,6 +11,7 @@ import dotenv from "dotenv";
 import jobapplyRoutes from "./routes/jobapplyRoutes.js";
 import { isAuthenticated } from "./middlewares/auth.js";
 import faqRoutes from "./routes/faqroute.js";
+import searchRoutes from "./routes/search.js";
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use("/auth",authRoutes);
 app.use(jobapplyRoutes);
+app.use("/search", searchRoutes);
 
 //routes
 app.get("/dashboard", isAuthenticated, (req, res) => {
@@ -181,7 +183,12 @@ app.get("/all-jobs",isAuthenticated, async (req,res)=>{
     
     try{
         const result=await db.query("SELECT * FROM jobs");
-        res.render("all-jobs",{ jobs: result.rows});
+      const jobs = result.rows;
+
+    res.render('all-jobs', {
+      jobs,
+      searchTerm: ''  // ✅ Fix: provide empty string to avoid EJS error
+    });
     } catch(err){
         console.error(err);
         res.send("error fetching job");

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
 
- body{
+    body{
       margin: 0;
       padding: 0;
       background-color: #f1f5f9;
@@ -117,22 +117,27 @@
 </head>
 <body>
   <div class="jobs-container">
-    <h2>Available Jobs</h2>
+    <% if(searchTerm) {%>
+    <h5 class="text-muted mb-3"> Showing results for "<%= searchTerm%>" </h5>
+    <%} else {%>
+    <h5 class="text-muted mb-3"> All Available Jobs</h5>
+    <%}%>
     <div class="job-grid">
-  <% jobs.forEach(job => { %>
-    <div class="job-card">
-      <h2 class="job-title"><%= job.title %></h2>
-
-      <p class="company-name"><%= job.company || "Unknown Company" %></p>
-      <p class="job-location"><%= job.location %> (<%= job.mode %>)</p>
-      <p class="job-skills"><strong>Skills:</strong> <%= job.skills %></p>
-      <p class="job-salary"><strong>Salary:</strong> ₹<%= job.salary %></p>
-      <a href="/all-jobs/<%= job.id %>" class="view-job-detail">View Detail</a>
-      <a href="/job/<%= job.id  %>/apply"><button class="apply-btn">Apply Now</button> </a> 
-
-    </div>
-  <% }) %>
-  </div>
+  <% if (jobs.length === 0) { %>
+    <p>No jobs found for "<%= searchTerm %>"</p>
+  <% } else { %>
+    <% jobs.forEach(job => { %>
+      <div class="job-card">
+        <h2 class="job-title"><%= job.title %></h2>
+        <p class="company-name"><%= job.company || "Unknown Company" %></p>
+        <p class="job-location"><%= job.location %> (<%= job.mode %>)</p>
+        <p class="job-skills"><strong>Skills:</strong> <%= job.skills %></p>
+        <p class="job-salary"><strong>Salary:</strong> ₹<%= job.salary %></p>
+        <a href="/all-jobs/<%= job.id %>" class="view-job-detail">View Detail</a>
+        <a href="/job/<%= job.id  %>/apply"><button class="apply-btn">Apply Now</button> </a> 
+      </div>
+    <% }) %>
+  <% } %>
 </div>
     
 </body>

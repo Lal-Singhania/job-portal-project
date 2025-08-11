@@ -34,33 +34,35 @@
         <div class="container">
             <div id ="head">
               <div class="container">
-                <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-                  <div class="col-md-3 mb-2 mb-md-0">
-                    <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+                <header class="d-flex flex-wrap align-items-center justify-content-between py-3 mb-4 border-bottom">
+                  <div class="d-flex align-items-center">
+                    <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none me-3">
                       <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
                     </a>
+                     <h5 class="fw-semibold text-white m-0">Welcome, <%= username %></h5>
                   </div>
-                  <h5 class="fw-semibold text-white">Welcome, <%= username%> </h5>
-                  <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+             <ul class="nav mb-2 justify-content-center mb-md-0">
                     <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
                     <li><a href="/all-jobs"  class="nav-link px-2">Jobs</a></li>
+              <% if (userHasJobs) { %>
+                  <li><a href="/posted-jobs" class="nav-link px-2">Posted Jobs</a></li>
+               <% } %>
                     <li><a href="pricing" class="nav-link px-2">Pricing</a></li>
                     <li><a href="faq" class="nav-link px-2">FAQs</a></li>
                     <li><a href="About" class="nav-link px-2">About</a></li>
                   </ul>
-            
-                  <div class="col-md-3 text-end">
-                    <a href="/post-job" class="btn
-                    btn-outline-light me-2">Post job</a>
-                    <a href="/logout" class="btn
-                    btn-outline-warning">logout</a>
-                  </div>
-                </header>
+
+              <div class="col-md-3 text-end">
+                  <a href="/post-job" class="btn btn-outline-light me-2">Post job</a>
+              <a href="/logout" class="btn btn-outline-warning">Logout</a>
+            </div>
+      </header>
+
               </div>
             <h1 class="tit">JOB Application Portal</h1>
             <form class="device-width me-" action="/search" method="GET">
                 <input type="search" name="q" class="form-control" placeholder="Search Job..." aria-label="Search" required>
-                <button type="button" class="Enter" >Search</button>
+                <button type="submit" class="Enter" >Search</button>
               </form>
         </div>
     </section>
@@ -76,21 +78,21 @@
           <h4>SKILL : <span style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Html , Css , Java Script</span></h4>
           <h4>Company : <span>TECH CORPORATION</span></h4>
           <h4>DESCRIPTION : <span>Looking for a skilled frontend developer</span></h4>
-        <button type="button" class="but" >Click</button>
+        <button type="button" class="but" >soon</button>
         </div>
         <div class="job" >
           <h4>Post : <span>Backend Developer</span></h4>
           <h4>SKILL : <span style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Node , Express , React</span></h4>
           <h4>Company : <span> INFOSYS </span></h4>
           <h4>DESCRIPTION : <span>Looking for a skilled backend developer</span></h4>
-        <button type="button" class="but" >Click</button>
+        <button type="button" class="but" >soon</button>
         </div>
         <div class="job" >
           <h4>Post : <span>Graphic Designer</span></h4>
           <h4>SKILL : <span style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Css , Canvas , Adobe</span></h4>
           <h4>Company : <span>Birla Group</span></h4>
           <h4>DESCRIPTION : <span>Looking for a skilled Graphic Designer</span></h4>
-        <button type="button" class="but" >Click</button>
+        <button type="button" class="but" >soon</button>
         </div>
        </div>
       </div>   

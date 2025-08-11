@@ -12,6 +12,7 @@ import jobapplyRoutes from "./routes/jobapplyRoutes.js";
 import { isAuthenticated } from "./middlewares/auth.js";
 import faqRoutes from "./routes/faqroute.js";
 import searchRoutes from "./routes/search.js";
+import postedjobsroute from "./routes/postedjobs.js";
 
 dotenv.config();
 
@@ -38,13 +39,30 @@ app.use(session({
     saveUninitialized: false, // don't create empty session 
     cookie: {maxAge: 30*24*60*60*1000}
 }));
-app.use(faqRoutes);
 app.use(passport.initialize());
 app.use(passport.session());
+app.use("/posted-jobs", postedjobsroute);
+app.use(faqRoutes);
 app.use("/auth",authRoutes);
 app.use(jobapplyRoutes);
 app.use("/search", searchRoutes);
+app.use(async (req, res, next) => {
+  res.locals.userHasJobs = false; // ✅ Always define this first
 
+  if (req.user) {
+    try {
+      const result = await db.query(
+        "SELECT COUNT(*) FROM jobs WHERE userid = $1",
+        [req.user.id]
+      );
+      res.locals.userHasJobs = parseInt(result.rows[0].count) > 0;
+    } catch (err) {
+      console.error("Error checking posted jobs:", err);
+    }
+  }
+
+  next();
+});
 //routes
 app.get("/dashboard", isAuthenticated, (req, res) => {
   const user = req.user          // Google

@@ -1,6 +1,8 @@
 export function isAuthenticated(req, res, next) {
 
-  if (req.session.user || req.isAuthenticated()) {
+   const passportAuth = (typeof req.isAuthenticated === "function") && req.isAuthenticated();
+
+  if (req.session?.user || passportAuth) {
     return next();
   }
   res.redirect("/login");

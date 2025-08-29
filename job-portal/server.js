@@ -1,7 +1,7 @@
 import express from "express";
 import { fileURLToPath } from "url";
 import db from "./config/dbclient.js";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import session from "express-session";
 import path from "path";
 import passport from "passport";
@@ -16,34 +16,34 @@ import postedjobsroute from "./routes/postedjobs.js";
 
 dotenv.config();
 
-
-const __filename =fileURLToPath(import.meta.url);
-const __dirname =path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 9000;
 
-
 //set view engine
 app.set("view engine", "ejs");
-app.set("views", path.join (__dirname, "views"));
+app.set("views", path.join(__dirname, "views"));
 
-app.use(express.static(path.join(__dirname,"public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 //middleware
-app.use(express.urlencoded({ extended : true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(session({ 
-    secret : 'your-secret', //use to sign the session Id
-    resave : false, //don't save session again if nothing has changed 
-    saveUninitialized: false, // don't create empty session 
-    cookie: {maxAge: 30*24*60*60*1000}
-}));
+app.use(
+  session({
+    secret: "your-secret", //use to sign the session Id
+    resave: false, //don't save session again if nothing has changed
+    saveUninitialized: false, // don't create empty session
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/posted-jobs", postedjobsroute);
 app.use(faqRoutes);
-app.use("/auth",authRoutes);
+app.use("/auth", authRoutes);
 app.use(jobapplyRoutes);
 app.use("/search", searchRoutes);
 app.use(async (req, res, next) => {
@@ -65,48 +65,52 @@ app.use(async (req, res, next) => {
 });
 //routes
 app.get("/dashboard", isAuthenticated, (req, res) => {
-  const user = req.user          // Google
-            || req.session.user; // Local
+  const user =
+    req.user || // Google
+    req.session.user; // Local
 
   const username = user.displayName || user.username || user.name || "Guest";
   const applied = req.session.applied; // Check if the user has applied for a job
   // Remove the flag so it only shows once
   delete req.session.applied;
- return res.render("dashboard", { username, applied , user});
+  return res.render("dashboard", { username, applied, user });
 });
 
-
-
-app.get ("/", (req,res) => {
-    res.sendFile(path.join( __dirname +"/public/job-home.html"));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname + "/public/job-home.html"));
 });
 
-app.get("/register", (req,res)=>{
-    res.render("register");
+app.get("/register", (req, res) => {
+  res.render("register");
 });
 
-app.post('/register', async (req,res)=>{
-    const {username ,email ,password} = req.body;
-    try {
-        const usercheck = await db.query('SELECT * FROM users WHERE email = $1', [email]);
-        if (usercheck.rows.length >0){
-            return req.send("user already exist");
-        }
-        const hasspassword = await bcrypt.hash(password,10);
-      
-         await db.query('INSERT INTO users (username , email , password) VALUES ($1 ,$2, $3)', [ username, email, hasspassword ]);
-        
-         req.session.user = {username ,email};//save user info in session
-
-         res.redirect("/dashboard");
-    } catch (err){
-        console.log(err);
-        res.send('error registration user');
+app.post("/register", async (req, res) => {
+  const { username, email, password } = req.body;
+  try {
+    const usercheck = await db.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+    if (usercheck.rows.length > 0) {
+      return req.send("user already exist");
     }
+    const hasspassword = await bcrypt.hash(password, 10);
+
+    await db.query(
+      "INSERT INTO users (username , email , password) VALUES ($1 ,$2, $3)",
+      [username, email, hasspassword]
+    );
+
+    req.session.user = { username, email }; //save user info in session
+
+    res.redirect("/dashboard");
+  } catch (err) {
+    console.log(err);
+    res.send("error registration user");
+  }
 });
 
-app.get("/login", (req,res) =>{
-    res.render("login");
+app.get("/login", (req, res) => {
+  res.render("login");
 });
 
 app.post("/login", async (req, res) => {
@@ -145,106 +149,123 @@ app.post("/login", async (req, res) => {
 
     // ---------- 4️⃣ SUCCESS ----------
     req.session.user = {
-      id:       user.id,
+      id: user.id,
       username: user.username,
-      email:    user.email,
+      email: user.email,
     };
     return res.redirect("/dashboard");
-
   } catch (err) {
     console.error("💥 login error:", err);
     return res.status(500).send("Server error during login");
   }
 });
 
-
 app.get("/logout", (req, res) => {
   req.logout(() => {
-    req.session.destroy(err => {
+    req.session.destroy((err) => {
       if (err) return res.redirect("/dashboard");
       res.redirect("/");
     });
   });
 });
 
-
-app.get("/post-job", isAuthenticated,(req,res)=>{
-    res.render("post-job");
+app.get("/post-job", isAuthenticated, (req, res) => {
+  res.render("post-job");
 });
 
-app.post("/post-job", async (req,res)=>{
-    console.log(req.body);
-    const {title,company,description,skills,mode,location,criteria,experience,salary}=req.body;
-    console.log("session:",req.session);
-    const userId = req.user?.id || req.session.user?.id;
-    console.log("userId", userId);
+app.post("/post-job", async (req, res) => {
+  console.log(req.body);
+  const {
+    title,
+    company,
+    description,
+    skills,
+    mode,
+    location,
+    criteria,
+    experience,
+    salary,
+  } = req.body;
+  console.log("session:", req.session);
+  const userId = req.user?.id || req.session.user?.id;
+  console.log("userId", userId);
 
-    if(!userId){
-        return res.status(401).send("user not found");
-    }
-    try{
-        await db.query(
-            `INSERT INTO jobs 
+  if (!userId) {
+    return res.status(401).send("user not found");
+  }
+  try {
+    await db.query(
+      `INSERT INTO jobs 
                 (userid,title,company,description,skills,mode,location,criteria ,experience,salary)
             VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
-            [userId,title,company,description,skills,mode,location,criteria,experience,salary]
-        );
-        console.log("job inserted");
-       return res.redirect("/dashboard");
-    } catch(err){
-        console.error(err);
-       return res.status(500).send("error posting job");
-    }
+      [
+        userId,
+        title,
+        company,
+        description,
+        skills,
+        mode,
+        location,
+        criteria,
+        experience,
+        salary,
+      ]
+    );
+    console.log("job inserted");
+    return res.redirect("/dashboard");
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send("error posting job");
+  }
 });
 
-app.get("/all-jobs",isAuthenticated, async (req,res)=>{
-    
-    try{
-        const result=await db.query("SELECT * FROM jobs");
-      const jobs = result.rows;
+app.get("/all-jobs", isAuthenticated, async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM jobs");
+    const jobs = result.rows;
 
-    res.render('all-jobs', {
+    res.render("all-jobs", {
       jobs,
-      searchTerm: ''  // ✅ Fix: provide empty string to avoid EJS error
+      searchTerm: "", // ✅ Fix: provide empty string to avoid EJS error
     });
-    } catch(err){
-        console.error(err);
-        res.send("error fetching job");
+  } catch (err) {
+    console.error(err);
+    res.send("error fetching job");
+  }
+});
+
+app.get("/all-jobs/:id", async (req, res) => {
+  const jobId = req.params.id;
+
+  try {
+    const result = await db.query(" SELECT * FROM jobs WHERE id = $1", [jobId]);
+
+    if (result.rows.length === 0) {
+      return res.send("job not found");
     }
+    res.render("job-details", { job: result.rows[0] });
+  } catch (err) {
+    console.log(err);
+    res.send("error loading job details");
+  }
 });
 
-app.get("/all-jobs/:id", async(req,res)=>{
-    const jobId = req.params.id;
-
-    try{
-        const result = await db.query(" SELECT * FROM jobs WHERE id = $1", [jobId]);
-
-        if (result.rows.length===0){
-            return res.send("job not found");
-        }
-        res.render("job-details",{job: result.rows[0]});
-    } catch(err){
-        console.log(err);
-        res.send("error loading job details")
-    }
+app.get("/pricing", (req, res) => {
+  res.sendFile(__dirname + "/public/pricing.html");
 });
 
-app.get ("/pricing", (req,res) => {
-    res.sendFile( __dirname +"/public/pricing.html");
-});
-
-app.get("/faq",isAuthenticated, (req, res) => {
+app.get("/faq", isAuthenticated, (req, res) => {
   res.render("faq", { messageSent: false });
 });
 
-app.get("/About", (req,res) => {
-    res.sendFile( __dirname +"/public/About.html");
+app.get("/About", (req, res) => {
+  res.sendFile(__dirname + "/public/About.html");
 });
 
-app.get ("/index.html", (req,res) => {
-    res.sendFile( __dirname +"/public/job-home.html");
+app.get("/index.html", (req, res) => {
+  res.sendFile(__dirname + "/public/job-home.html");
 });
 
-app.listen (port , () =>{
-    console.log (`sever is running ${port}`);
+app.listen(port, () => {
+  console.log(`sever is running ${port}`);
 });
